@@ -17,6 +17,7 @@ public class VendingMachine {
 
 
     public static void main(String[] args) {
+
         menuOneChoice();
 
     }
@@ -66,6 +67,7 @@ public class VendingMachine {
         }
     }
     public static void menuOneChoice(){
+
         Menu menuOne = new Menu();
         int menuOneChoice = menuOne.runStartMenu();
         if (menuOneChoice == 1){
