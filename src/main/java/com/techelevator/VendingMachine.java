@@ -42,7 +42,8 @@ public class VendingMachine {
         return productList;
     }
 
-    public Product testDispense(){ return null;
+    public Product testDispense(){
+        return null;
     }
 
 
