@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 public class Product {
     private String name;
     private String slotID;
-    private Integer price;
+    private Double price;
     private String type;
     private Integer quantity;
 
@@ -15,7 +15,7 @@ public class Product {
         this.slotID = slotID;
         this.name = name;
         String trimmed = price.trim();
-        this.price = Integer.parseInt(trimmed);
+        this.price = Double.parseDouble(trimmed);
         this.type = type;
         this.quantity = 5;
 
@@ -29,7 +29,7 @@ public class Product {
         return slotID;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -39,6 +39,10 @@ public class Product {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getType(){
+        return type;
     }
 
     public String getProduct() {
