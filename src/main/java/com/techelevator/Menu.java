@@ -35,7 +35,7 @@ public class Menu {
     }
 
     public static int feedMoney(){ //can we simplify this?
-        System.out.println("Please enter money");
+        System.out.println("Please enter money:");
         String cashInputString = in.nextLine();
         Double cashInputDouble = Double.parseDouble(cashInputString);
         long cashInputLong = Math.round(cashInputDouble);
