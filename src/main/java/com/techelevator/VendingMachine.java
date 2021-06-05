@@ -146,7 +146,7 @@ public class VendingMachine {
                         System.out.println("No such file");
                     } menuTwoChoice();
                 } else if (productInList.getQuantity() == 0) {
-                    System.out.println("Sorry! Out of Stock!");
+                    System.out.println("Sorry! Sold Out!");
                     dispenseProduct();
                 }
             }

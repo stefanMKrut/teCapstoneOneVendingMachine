@@ -14,19 +14,21 @@ public class Menu {
 
 
     public static int runStartMenu(){
-        System.out.println("Welcome! Check out our delicious options!");
-        System.out.println("1) List of Products");
-        System.out.println("2) Purchase");
-        System.out.println("3) Exit");
+        System.out.println(" ");
+        System.out.println("Welcome to the Vendomatic 800! ☂️");
+        System.out.println(" ");
+        System.out.println("Enter 1 to view our delicious options!");
+        System.out.println("Enter 2 to purchase.");
+        System.out.println("Enter 3 to exit.");
         String userChoice = in.nextLine();
         int stringToInt = Integer.parseInt(userChoice);
         return stringToInt;
         }
 
     public static int runPurchaseMenu(){
-        System.out.println("1) Feed Money");
-        System.out.println("2) Make Purchase");
-        System.out.println("3) End Transaction");
+        System.out.println("Enter 1 to feed money.");
+        System.out.println("Enter 2 to make purchase.");
+        System.out.println("Enter 3 to end transaction");
         String userChoice = in.nextLine();
         int stringToInt = Integer.parseInt(userChoice);
         return stringToInt;
@@ -42,8 +44,9 @@ public class Menu {
     }
 
    public static String runDispenseMenu(){
-       System.out.println("Please make a selection");
-       System.out.println("1) Return to Purchase Menu");
+       System.out.println(" ");
+       System.out.println("Please make a selection by entering a valid slot.  Example: A1");
+       System.out.println("Enter 1 to return to Purchase Menu");
        String selectionEntered = in.nextLine();
        return selectionEntered.toUpperCase();
 
