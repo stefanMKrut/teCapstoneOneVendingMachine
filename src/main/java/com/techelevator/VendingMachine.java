@@ -19,11 +19,11 @@ public class VendingMachine {
 
     public VendingMachine() {
         this.balance = 0;
+        stock();
     }
 
     public static void main(String[] args) {
         VendingMachine test = new VendingMachine();
-        test.stock();
         test.menuOneChoice();
 
     }
@@ -52,7 +52,7 @@ public class VendingMachine {
         }
     }
 
-    public List getProductList(){
+    public List getProductList() {
         return productList;
     }
 
@@ -71,6 +71,7 @@ public class VendingMachine {
             menuTwoChoice();
         } else if (menuOneChoice == 3) {
             System.out.println("Goodbye!!");
+            System.exit(1);
         } else if (menuOneChoice > 3 || menuOneChoice < 1) {
             System.out.println("Sorry! Invalid Option!");
             menuOneChoice();
@@ -83,9 +84,16 @@ public class VendingMachine {
         System.out.println();
         int menuTwoChoice = Menu.runPurchaseMenu();
         if (menuTwoChoice == 1) {
-            addToBalance();
+            int cashToAdd = Menu.feedMoney();
+            addToBalance(cashToAdd);
         } else if (menuTwoChoice == 2) {
-            dispenseProduct();
+            int i = 0;
+            for (Product productInList : productList) {
+                System.out.println(productList.get(i).getProduct());
+                i++;
+            }
+            String selectionChoice = Menu.runDispenseMenu();
+            dispenseProduct(selectionChoice);
         } else if (menuTwoChoice == 3) {
             endTransaction();
         } else if (menuTwoChoice > 3 || menuTwoChoice < 1) {
@@ -95,42 +103,53 @@ public class VendingMachine {
 
     }
 
-    public void addToBalance() {
-        int cashToAdd = Menu.feedMoney();
-        balance = balance + cashToAdd;
-        System.out.printf("Current Money Provided: %.2f", balance);
-        try (FileWriter fileWriter = new FileWriter("Log.txt", true);
-             PrintWriter writer = new PrintWriter(fileWriter)) {
-            writer.println(LocalDateTime.now() + " FEED MONEY $" + cashToAdd + " $" + balance);
-        } catch (IOException e) {
-            System.out.println("No such file");
-        }
-        menuTwoChoice();
+    public void setBalance(double balanceAmount) {
+        balance = balanceAmount;
     }
 
-    public void dispenseProduct() {
-        int i = 0;
-        for (Product productInList : productList) {
-            System.out.println(productList.get(i).getProduct());
-            i++;
+    public double getBalance() {
+        return balance;
+    }
+
+    public void addToBalance(int cashToAdd) {
+        if (cashToAdd < 1) {
+            System.out.println("Please enter a valid whole dollar amount.");
+        } else {
+            balance = balance + cashToAdd;
+            System.out.printf("Current Money Provided: %.2f", balance);
+            try (FileWriter fileWriter = new FileWriter("Log.txt", true);
+                 PrintWriter writer = new PrintWriter(fileWriter)) {
+                writer.println(LocalDateTime.now() + " FEED MONEY $" + cashToAdd + " $" + balance);
+            } catch (IOException e) {
+                System.out.println("No such file");
+            }
+
         }
-        String selectionChoice = Menu.runDispenseMenu();
+        rerouteMenu(2);
+    }
+
+    public String dispenseProduct(String selectionChoice) {
         double startingBalance = balance;
         int x = 0;
         if (selectionChoice.equals("1")) {
-            menuTwoChoice();
+            rerouteMenu(2);
         }
         for (Product productInList : productList) {
             x++;
             if (x == productList.size() && !selectionChoice.equals(productInList.getSlotID())) {
-                System.out.println("Sorry! Not a valid option! Try again");
-                dispenseProduct();
+                String errorInvalidChoice = "Sorry! Not a valid option! Try again";
+                System.out.println(errorInvalidChoice);
+                rerouteMenu(2);
+                return errorInvalidChoice;
             } else if (selectionChoice.equals(productInList.getSlotID())) {
                 if (productInList.getPrice() > balance) {
-                    System.out.println("Sorry! Not enough money! Try again");
-                    dispenseProduct();
+                    String balanceTooLow = "Sorry! Not enough money! Try again";
+                    System.out.println(balanceTooLow);
+                    rerouteMenu(2);
+                    return balanceTooLow;
                 } else if (productInList.getQuantity() > 0) {
-                    System.out.println("Enjoy your " + productInList.getName());
+                    String saleMessage = "Enjoy your " + productInList.getName();
+                    System.out.println(saleMessage);
                     productInList.setQuantity(productInList.getQuantity() - 1);
                     balance = (balance - productInList.getPrice());
                     if (productInList.getType().equals("Chip")) {
@@ -148,13 +167,18 @@ public class VendingMachine {
                     } catch (IOException e) {
                         System.out.println("No such file");
                     }
-                    menuTwoChoice();
+                    rerouteMenu(2);
+                    return saleMessage;
                 } else if (productInList.getQuantity() == 0) {
-                    System.out.println("Sorry! Sold Out!");
-                    dispenseProduct();
+                    String soldOut = "Sorry! Sold Out!";
+                    System.out.println(soldOut);
+                    rerouteMenu(2);
+                    return soldOut;
                 }
             }
         }
+        String errorSomethingHasGoneWrong = "Something Has Gone Wrong. Exiting Program";
+        return errorSomethingHasGoneWrong;
 
 
     }
@@ -165,7 +189,7 @@ public class VendingMachine {
         menuOneChoice();
     }
 
-    public void changeDispense() {
+    public String changeDispense() {
         Double startingChange = balance;
         Double changeDouble = balance * 100;
         long changeLong = Math.round(changeDouble);
@@ -190,7 +214,8 @@ public class VendingMachine {
         } else {
             pennies = changeInt;
         }
-        System.out.println("Your change is " + quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels, and " + pennies + " pennies");
+        String changeDispensed = "Your change is " + quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels, and " + pennies + " pennies";
+        System.out.println(changeDispensed);
         System.out.println();
         balance = 0;
         try (FileWriter fileWriter = new FileWriter("Log.txt", true);
@@ -199,6 +224,7 @@ public class VendingMachine {
         } catch (IOException e) {
             System.out.println("No such file");
         }
+        return changeDispensed;
     }
 
     public void exitVendingMachine() {
@@ -209,5 +235,18 @@ public class VendingMachine {
     public void returnToPurchaseMenu() {
 
     }
+
+    public void rerouteMenu(int menuID) {
+        if (menuID == 1) {
+            menuOneChoice();
+        } else if (menuID == 2) {
+            menuTwoChoice();
+        } else {
+            System.out.println("Invalid Menu ID. Closing Program");
+            endTransaction();
+            exitVendingMachine();
+        }
+    }
+
 }
 
