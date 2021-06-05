@@ -69,7 +69,7 @@ public class VendingMachine {
             System.out.println("Goodbye!!");
             System.exit(1);
         } else if (menuOneChoice > 3 || menuOneChoice < 1){
-            System.out.println("Sorry! Not a valid option!");
+            System.out.println("Sorry! Not avalid option!");
             menuOneChoice();
         }
     }
