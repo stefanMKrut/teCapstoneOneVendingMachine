@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class VendingMachine {
-    private List<Product> productList = new ArrayList<>();
+    private final List<Product> productList = new ArrayList<>();
     private double balance;
 
     public VendingMachine() {
@@ -52,9 +52,13 @@ public class VendingMachine {
         }
     }
 
+    public List getProductList(){
+        return productList;
+    }
+
     public void menuOneChoice() {
         Menu menuOne = new Menu();
-        int menuOneChoice = menuOne.runStartMenu();
+        int menuOneChoice = Menu.runStartMenu();
         if (menuOneChoice == 1) {
             int i = 0;
             for (Product productInList : productList) {
@@ -67,9 +71,8 @@ public class VendingMachine {
             menuTwoChoice();
         } else if (menuOneChoice == 3) {
             System.out.println("Goodbye!!");
-            System.exit(1);
-        } else if (menuOneChoice > 3 || menuOneChoice < 1){
-            System.out.println("Sorry! Not avalid option!");
+        } else if (menuOneChoice > 3 || menuOneChoice < 1) {
+            System.out.println("Sorry! Invalid Option!");
             menuOneChoice();
         }
     }
@@ -83,15 +86,14 @@ public class VendingMachine {
             addToBalance();
         } else if (menuTwoChoice == 2) {
             dispenseProduct();
-        } else if (menuTwoChoice == 3){
+        } else if (menuTwoChoice == 3) {
             endTransaction();
-        } else if (menuTwoChoice > 3 || menuTwoChoice < 1){
+        } else if (menuTwoChoice > 3 || menuTwoChoice < 1) {
             System.out.println("Sorry! Not a valid option!");
             menuTwoChoice();
         }
 
     }
-
 
     public void addToBalance() {
         int cashToAdd = Menu.feedMoney();
@@ -115,7 +117,7 @@ public class VendingMachine {
         String selectionChoice = Menu.runDispenseMenu();
         double startingBalance = balance;
         int x = 0;
-        if (selectionChoice.equals("1")){
+        if (selectionChoice.equals("1")) {
             menuTwoChoice();
         }
         for (Product productInList : productList) {
@@ -131,13 +133,13 @@ public class VendingMachine {
                     System.out.println("Enjoy your " + productInList.getName());
                     productInList.setQuantity(productInList.getQuantity() - 1);
                     balance = (balance - productInList.getPrice());
-                    if (productInList.getType().equals("Chip")){
+                    if (productInList.getType().equals("Chip")) {
                         System.out.println("Crunch Crunch, Yum!");
-                    } else if (productInList.getType().equals("Candy")){
+                    } else if (productInList.getType().equals("Candy")) {
                         System.out.println("Munch Munch, Yum!");
-                    } else if (productInList.getType().equals("Drink")){
+                    } else if (productInList.getType().equals("Drink")) {
                         System.out.println("Glug Glug, Yum!");
-                    } else if (productInList.getType().equals("Gum")){
+                    } else if (productInList.getType().equals("Gum")) {
                         System.out.println("Chew Chew, Yum!");
                     }
                     try (FileWriter fileWriter = new FileWriter("Log.txt", true);
@@ -145,7 +147,8 @@ public class VendingMachine {
                         writer.println(LocalDateTime.now() + " " + productInList.getName() + " $" + startingBalance + " $" + balance);
                     } catch (IOException e) {
                         System.out.println("No such file");
-                    } menuTwoChoice();
+                    }
+                    menuTwoChoice();
                 } else if (productInList.getQuantity() == 0) {
                     System.out.println("Sorry! Sold Out!");
                     dispenseProduct();
@@ -156,7 +159,7 @@ public class VendingMachine {
 
     }
 
-    public void endTransaction(){
+    public void endTransaction() {
         changeDispense();
         System.out.println("Please retrieve change");
         menuOneChoice();
@@ -181,7 +184,7 @@ public class VendingMachine {
                 pennies = changeInt;
             }
         } else if (changeInt < 10 && changeInt >= 5) {
-             nickels = changeInt / 5;
+            nickels = changeInt / 5;
             changeInt = changeInt % 5;
             pennies = changeInt;
         } else {
@@ -198,12 +201,12 @@ public class VendingMachine {
         }
     }
 
-    public void exitVendingMachine(){
+    public void exitVendingMachine() {
         System.out.println("Goodbye! Have a wonderful day!");
         System.exit(1);
     }
 
-    public void returnToPurchaseMenu(){
+    public void returnToPurchaseMenu() {
 
     }
 }

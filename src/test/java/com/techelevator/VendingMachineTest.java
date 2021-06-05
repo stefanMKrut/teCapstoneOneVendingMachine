@@ -3,25 +3,29 @@ package com.techelevator;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class VendingMachineTest {
+    VendingMachine obj = new VendingMachine();
 
     @Test
+    public void productList_has_same_number_of_lines_as_file() {
+        File inputFile = new File("vendingmachine.csv");
+        int i = 0;
+        try (Scanner scanner = new Scanner(inputFile);) {
+            while (scanner.hasNextLine()) {
+                i++;
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
 
-    public void returns_correct_snack_with_slotID() {
-        //Arrange
-        VendingMachine obj = new VendingMachine();
-        double balance = 3.00;
-        int menuOneChoice = 2;
-        int menuTwoChoice = 2;
-        String selectionChoice = "A1";
-
-        //Act
-        obj.dispenseProduct();
-
-
-        //Assert
-        Assert.assertEquals("Enjoy your Potato Crisps", selectionChoice);
-
-
+        int actualList = obj.getProductList().size();
+        Assert.assertEquals(i, actualList);
     }
 }
