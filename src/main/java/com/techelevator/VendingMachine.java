@@ -75,7 +75,8 @@ public class VendingMachine {
     }
 
     public void menuTwoChoice() {
-        System.out.println("Your current balance is " + balance);
+        System.out.println(" ");
+        System.out.printf("Your current balance is: %.2f ", balance);
         System.out.println();
         int menuTwoChoice = Menu.runPurchaseMenu();
         if (menuTwoChoice == 1) {
@@ -95,7 +96,7 @@ public class VendingMachine {
     public void addToBalance() {
         int cashToAdd = Menu.feedMoney();
         balance = balance + cashToAdd;
-        System.out.println("Current Money Provided: " + balance);
+        System.out.printf("Current Money Provided: %.2f", balance);
         try (FileWriter fileWriter = new FileWriter("Log.txt", true);
              PrintWriter writer = new PrintWriter(fileWriter)) {
             writer.println(LocalDateTime.now() + " FEED MONEY $" + cashToAdd + " $" + balance);
@@ -130,7 +131,7 @@ public class VendingMachine {
                     System.out.println("Enjoy your " + productInList.getName());
                     productInList.setQuantity(productInList.getQuantity() - 1);
                     balance = (balance - productInList.getPrice());
-                    if (productInList.getType().equals("Chips")){
+                    if (productInList.getType().equals("Chip")){
                         System.out.println("Crunch Crunch, Yum!");
                     } else if (productInList.getType().equals("Candy")){
                         System.out.println("Munch Munch, Yum!");
@@ -191,7 +192,7 @@ public class VendingMachine {
         balance = 0;
         try (FileWriter fileWriter = new FileWriter("Log.txt", true);
              PrintWriter writer = new PrintWriter(fileWriter)) {
-            writer.println(LocalDateTime.now() + "GIVE CHANGE $" + startingChange + " $" + balance);
+            writer.println(LocalDateTime.now() + " GIVE CHANGE $" + startingChange + " $" + balance);
         } catch (IOException e) {
             System.out.println("No such file");
         }
